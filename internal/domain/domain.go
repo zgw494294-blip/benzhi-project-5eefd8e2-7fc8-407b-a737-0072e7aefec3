@@ -644,6 +644,9 @@ func PreviewRosterCSV(data []byte) (RosterPreview, error) {
 	if len(rows) == 0 {
 		return RosterPreview{}, &ValidationError{Fields: map[string]string{"csv": "CSV must include a header and at least one row"}}
 	}
+	if len(rows) < 2 {
+		return RosterPreview{}, &ValidationError{Fields: map[string]string{"csv": "CSV must include at least one data row after the header"}}
+	}
 	indexes := make(map[string]int)
 	columns := make([]string, 0, len(rows[0]))
 	for index, value := range rows[0] {
