@@ -1096,8 +1096,10 @@ func statusFor(err error) int {
 		return http.StatusConflict
 	case errors.As(err, &validation):
 		return http.StatusUnprocessableEntity
-	default:
+	case errors.Is(err, domain.ErrInvalid), errors.Is(err, domain.ErrLifecycle):
 		return http.StatusBadRequest
+	default:
+		return http.StatusInternalServerError
 	}
 }
 
