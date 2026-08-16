@@ -817,6 +817,9 @@ func (s *Store) SubmitTraffic(incidentID string, input TrafficInput, actor strin
 	if received.IsZero() {
 		received = now
 	}
+	if !input.ExpiresAt.After(received) {
+		return nil, false, &ValidationError{Fields: map[string]string{"expires_at": "expiry must be after received time"}}
+	}
 	traffic := Traffic{
 		ID:                   newID("TRF"),
 		Sequence:             working.NextTrafficSequence,
