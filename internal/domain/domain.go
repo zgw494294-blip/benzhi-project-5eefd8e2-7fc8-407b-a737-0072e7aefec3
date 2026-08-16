@@ -765,7 +765,9 @@ func (s *Store) UpdateStationAvailability(incidentID, stationID string, availabi
 	updated.Availability = availability
 	updated.Version++
 	if availability == CheckedOut {
-		updated.CheckedOutAt = now
+		if updated.CheckedOutAt.IsZero() {
+			updated.CheckedOutAt = now
+		}
 		for i := range updated.Sessions {
 			if updated.Sessions[i].ID == updated.CheckInID && updated.Sessions[i].CheckedOutAt.IsZero() {
 				updated.Sessions[i].CheckedOutAt = now
