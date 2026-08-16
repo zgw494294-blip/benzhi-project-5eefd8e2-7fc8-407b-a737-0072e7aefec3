@@ -1517,7 +1517,7 @@ func validateTrafficInput(input TrafficInput) map[string]string {
 	if strings.TrimSpace(input.Recipient) == "" {
 		fields["recipient"] = "recipient is required"
 	}
-	if len([]rune(input.Body)) == 0 || len([]rune(input.Body)) > 16000 {
+	if strings.TrimSpace(input.Body) == "" || len([]rune(input.Body)) > 16000 {
 		fields["body"] = "body is required and must be at most 16000 characters"
 	}
 	if input.IdempotencyKey == "" || len([]rune(input.IdempotencyKey)) > 128 {
